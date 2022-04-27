@@ -46,13 +46,3 @@ class QuestionViewControllerTest: XCTestCase {
     
 }
 
-private extension UICollectionView {
-    func cell(at row: Int) -> SimpleCell? {
-        let indexPath = IndexPath(row: row, section: 0)
-        return dataSource?.collectionView(self, cellForItemAt: indexPath) as? SimpleCell
-    }
-    
-    func title(at row: Int) -> String? {
-        cell(at: row)?.textLabel.text
-    }
-}
