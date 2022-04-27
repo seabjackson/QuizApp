@@ -13,13 +13,15 @@ class QuestionViewController: UIViewController {
     typealias CellRegistration = UICollectionView.CellRegistration<SimpleCell, String>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, String>
 
-    private var question: String = ""
-    private var options: [String] = []
+    private var question = ""
+    private var options = [String]()
+    private var selection: ((String) -> Void)? = nil
     
-    convenience init(question: String, options: [String]) {
+    convenience init(question: String, options: [String], selection: @escaping (String) -> Void) {
         self.init()
         self.question = question
         self.options = options
+        self.selection = selection
     }
     
     enum Section: Hashable {
@@ -82,6 +84,7 @@ class QuestionViewController: UIViewController {
         configureViewHierarchy()
         configureConstraints()
         
+        listView.delegate = self
         headerLabel.text = question
         applySnapshot(with: options)
         
@@ -105,6 +108,18 @@ class QuestionViewController: UIViewController {
         ])
     }
 }
+
+// MARK: - UICollectionViewDelegate
+extension QuestionViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let selectedAnswer = dataSource.itemIdentifier(for: indexPath) {
+            selection?(selectedAnswer)
+        }
+        
+    }
+}
+
 
 class SimpleCell: UICollectionViewListCell {
     lazy var textLabel: UILabel = {
