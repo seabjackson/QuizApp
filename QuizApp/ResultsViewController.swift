@@ -7,13 +7,6 @@
 
 import UIKit
 
-struct PresentableAnswer: Hashable {
-    let isCorrect: Bool
-}
-
-class CorrectAnswerCell: UICollectionViewCell {}
-
-class WrongAnswerCell: UICollectionViewCell {}
 
 class ResultsViewController: UIViewController {
     typealias DataSource = UICollectionViewDiffableDataSource<Section, PresentableAnswer>
@@ -83,7 +76,7 @@ class ResultsViewController: UIViewController {
         let wrongCellRegistration = makeWrongCellRegistration()
         
         let dataSource = DataSource(collectionView: listView) { collectionView, indexPath, answer in
-            if answer.isCorrect {
+            if answer.wrongAnswer == nil {
                 return collectionView.dequeueConfiguredReusableCell(using: correctCellRegistration, for: indexPath, item: answer)
             } else {
                 return collectionView.dequeueConfiguredReusableCell(using: wrongCellRegistration, for: indexPath, item: answer)
@@ -94,24 +87,20 @@ class ResultsViewController: UIViewController {
     
     
     func makeCorrectCellRegistration() -> CorrectAnswerCellRegistration {
-        CorrectAnswerCellRegistration { cell, indexPath, answer in
-            
-//            var configuraton = cell.defaultContentConfiguration()
-//            configuraton.text = option
-//            cell.contentConfiguration = configuraton
-//            cell.textLabel.text = answer
+        CorrectAnswerCellRegistration { cell, indexPath, presentableAnswer in
+            cell.questionLabel.text = presentableAnswer.question
+            cell.answerLabel.text = presentableAnswer.answer
         }
     }
     
     func makeWrongCellRegistration() -> WrongAnswerCellRegistration {
         WrongAnswerCellRegistration { cell, indexPath, answer in
-            
-//            var configuraton = cell.defaultContentConfiguration()
-//            configuraton.text = option
-//            cell.contentConfiguration = configuraton
-//            cell.textLabel.text = answer
+            cell.questionLabel.text = answer.question
+            cell.correctAnswerLabel.text = answer.answer
+            cell.wrongAnswerLabel.text = answer.wrongAnswer
         }
     }
+    
     
     private func applySnapshot(with answers: [PresentableAnswer], animatingDifferences: Bool = true) {
         var snapshot = Snapshot()

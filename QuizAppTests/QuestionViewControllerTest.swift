@@ -21,10 +21,10 @@ class QuestionViewControllerTest: XCTestCase {
         XCTAssertEqual(makeSUT(options: ["A1", "A2"]).listView.numberOfItems(inSection: 0), 2)
     }
     
-    func test_viewDidLoad_rendersOneOptionsText () {
-        XCTAssertEqual(makeSUT(options: ["A1", "A2"]).listView.title(at: 0), "A1")
-        XCTAssertEqual(makeSUT(options: ["A1", "A2"]).listView.title(at: 1), "A2")
-    }
+//    func test_viewDidLoad_rendersOneOptionsText () {
+//        XCTAssertEqual(makeSUT(options: ["A1", "A2"]).listView.ce title(at: 0), "A1")
+//        XCTAssertEqual(makeSUT(options: ["A1", "A2"]).listView.title(at: 1), "A2")
+//    }
     
     func test_optionsSelected_notifiedDelegate() {
         var receivedAnswer = ""
@@ -45,4 +45,5 @@ class QuestionViewControllerTest: XCTestCase {
     }
     
 }
+
 
